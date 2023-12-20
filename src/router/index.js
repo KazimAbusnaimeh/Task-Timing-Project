@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import TasksView from "../views/TasksView.vue"
+import TimerView from "../views/TimerView.vue"
 
 const routes = [
   {
@@ -8,14 +10,14 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
+    path: "/tasks",
+    name: "tasks",
+    component:TasksView}
+    ,{
+      path:"/timer",
+      name:"timer",
+      component:TimerView
+    }
 ];
 
 const router = createRouter({
