@@ -69,6 +69,14 @@ export default createStore({
       UPDATE_TASK_DESCRIPTION(state,description){
         state.currentTask.description=description
       },
+      RESET_CURRENT_TASK(state){
+        state.currentTask={
+            id: -1,
+            name: "",
+            description: "",
+            timer: { seconds: 0, minutes: 0, hours: 0 },
+          }
+      },
       START_TIMER(state) {
         state.currentTask.isTimerRunning = true;
         state.currentTask.timerInterval = setInterval(() => {
@@ -81,14 +89,13 @@ export default createStore({
               state.currentTask.timer.hours++;
             }
           }
-        }, 1000);
+        }, 300);
       },
       STOP_TIMER(state) {
         state.currentTask.isTimerRunning = false;
         clearInterval(state.currentTask.timerInterval);
       },
       FINISH_TIMER(state) {
-        
         clearInterval(state.currentTask.timerInterval);
         state.currentTask.timer = { hours: 0, minutes: 0, seconds: 0 };
       }
@@ -117,6 +124,9 @@ export default createStore({
       },
       updateTaskDescription({ commit }, description) {
         commit('UPDATE_TASK_DESCRIPTION', description);
+      },
+      resetCurrentTask({commit}){
+        commit("RESET_CURRENT_TASK")
       },
       startTimer({ commit }) {
         commit('START_TIMER');

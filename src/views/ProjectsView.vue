@@ -9,16 +9,24 @@
     <button @click="currentProject.id != -1 ? saveChanges() : createProject()">
       {{ currentProject.id != -1 ? "Save Changes" : "Create Project" }}
     </button>
-    <h3 v-if="currentProject.id != -1">Tasks</h3>
-    <task-component
-      v-for="task in currentProject.tasks"
-      :key="task.id"
-      :task="task"
-      @click="setCurrentTask(task)"
-    ></task-component>
-    <button v-if="currentProject.id != -1" @click="currentProjectDismiss">
-      Create new Project
-    </button>
+    <div>
+      <h1></h1>
+      <button v-if="currentProject.id != -1" @click="currentProjectDismiss">
+        Create new Project
+      </button>
+      <h3 v-if="currentProject.id != -1">
+        {{ currentProject.tasks.length > 0 ? "Tasks" : "No tasks yet" }}
+      </h3>
+      <task-component
+        v-for="task in currentProject.tasks"
+        :key="task.id"
+        :task="task"
+        @click="setCurrentTask(task)"
+      ></task-component>
+      <button v-if="currentProject.id != -1" @click="addNewTask">
+        add new Task
+      </button>
+    </div>
   </div>
 </template>
 
@@ -66,6 +74,10 @@ export default {
     },
     setCurrentTask(task) {
       this.$store.dispatch("setCurrentTask", task);
+      this.$router.push("/tasks");
+    },
+    addNewTask() {
+      this.$store.dispatch("resetCurrentTask");
       this.$router.push("/tasks");
     },
   },

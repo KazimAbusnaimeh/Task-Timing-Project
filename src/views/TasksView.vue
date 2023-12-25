@@ -5,9 +5,11 @@
     </h2>
     <input v-model="taskName" placeholder="Enter task name" />
     <input v-model="taskDescription" placeholder="Enter task Description" />
-    <button @click="start">start</button>
+    <button @click="currentTask.id != -1 ? saveChanges() : start()">
+      {{ currentTask.id != -1 ? "save changes" : "start task" }}
+    </button>
     <p>{{ formatTime(timer) }}</p>
-    <button @click="restart">start</button>
+    <button @click="restart">Keep Going</button>
     <button @click="stop">Stop</button>
     <button @click="finish">Finish</button>
   </div>
@@ -30,6 +32,9 @@ export default {
     currentProject() {
       return this.$store.state.currentProject;
     },
+    currentTask() {
+      return this.$store.state.currentTask;
+    },
     timer() {
       return this.$store.state.currentTask.timer;
     },
@@ -45,6 +50,10 @@ export default {
     this.taskDescription = this.$store.state.currentTask.description;
   },
   methods: {
+    saveChanges() {
+      this.$store.dispatch("updateTaskName", this.taskName);
+      this.$store.dispatch("updateTaskDescription", this.taskDescription);
+    },
     start() {
       if (this.isTaskDataFilled && !this.isTimerRunning) {
         this.dataInterphase = false;
@@ -59,17 +68,16 @@ export default {
     },
     finish() {
       this.stop();
-      if (this.currentTask == null || this.currentTask.id == -1) {
+      if (this.currentTask.id == -1) {
         this.$store.dispatch("addTask", {
           id: this.currentProject.tasks.length + 1,
           name: this.taskName,
           description: this.taskDescription,
-          timer: {
-            hours: 0,
-            minutes: 0,
-            seconds: 0,
-          },
+          timer: this.timer,
         });
+      }
+      if (this.currentTask.id != -1) {
+        this.$store.dispatch("resetCurrentTask");
       }
       this.$store.dispatch("finishTimer");
       this.$router.push("/");
