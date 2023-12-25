@@ -1,8 +1,8 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/tasks">Tasks</router-link> |
-    <router-link to="/timer">Timer</router-link>
+    <router-link to="/project">Project</router-link> |
+    <router-link to="/tasks">Task</router-link>
   </nav>
 </template>
 <style lang="scss">
